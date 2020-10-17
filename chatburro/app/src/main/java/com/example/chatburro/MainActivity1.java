@@ -1,7 +1,9 @@
 package com.example.chatburro;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,6 +21,7 @@ public class MainActivity1 extends AppCompatActivity {
     private EditText edEntradaTexto;
     SharedPreferences sharedPref;
     TextView tvMensagem;
+    TextView tvMensagem2;
 
     private static final String LOG_TAG = MainActivity1.class.getSimpleName();
     private static final String TAG_PREFERENCES = MainActivity1.class.getSimpleName();
@@ -35,6 +38,7 @@ public class MainActivity1 extends AppCompatActivity {
 
         Button botao = findViewById(R.id.btSend);
         tvMensagem = findViewById(R.id.mensagem);
+        tvMensagem2 = findViewById(R.id.mensagem2);
         edEntradaTexto =  findViewById(R.id.entradaTexto);
 
 
@@ -47,7 +51,7 @@ public class MainActivity1 extends AppCompatActivity {
 
                 // SALVANDO DADOS
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString(TAG_KEY_MESSAGE, mensagem);
+                editor.putString("MESSAGE_KEY", mensagem);
                 editor.apply();
 
                 startActivityForResult(intent, 1000);
@@ -56,6 +60,16 @@ public class MainActivity1 extends AppCompatActivity {
 
         Log.i(LOG_TAG, "onCreate");
     }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == 1000) {
+//            if (resultCode == Activity.RESULT_OK) {
+//
+//            }
+//        }
+//    }
 
     @Override
     protected void onStart() {
@@ -68,8 +82,10 @@ public class MainActivity1 extends AppCompatActivity {
         super.onResume();
         Log.i(LOG_TAG, "onResume");
         // RECUPERANDO DADOS
-        String value = sharedPref.getString("MESSAGE", "Não existe valor para essa key");
-        tvMensagem.setText(value);
+        String value1 = sharedPref.getString("MESSAGE_KEY", "Não existe valor para essa key");
+        String value2 = sharedPref.getString("MESSAGE", "Não existe valor para essa key");
+        tvMensagem.setText(value1 + " \n" + value2);
+//        tvMensagem2.setText(value2);
     }
 
     @Override

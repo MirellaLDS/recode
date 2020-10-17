@@ -17,8 +17,15 @@
         android:id="@+id/mensagem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mensagem"
+        android:text="Mensagem Envio"
         app:layout_constraintTop_toBottomOf="@id/titulo"/>
+
+    <TextView
+        android:id="@+id/mensagem2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mensagem resposta"
+        app:layout_constraintTop_toBottomOf="@id/mensagem"/>
 
     <EditText
         android:id="@+id/entradaTexto"
