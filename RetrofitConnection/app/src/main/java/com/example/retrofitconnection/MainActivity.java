@@ -2,13 +2,16 @@ package com.example.retrofitconnection;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.retrofitconnection.config.RetrofitConfig;
 import com.example.retrofitconnection.model.Departamento;
 import com.example.retrofitconnection.model.Professor;
+import com.example.retrofitconnection.repository.ResultEvent;
 
 import java.util.List;
 
@@ -20,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView listView;
     private String[] nameProfessorArray = new String[]{};
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,14 +31,46 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         listView = findViewById(R.id.listview);
+//
+//        nameProfessorArray = new String[] { "Cupcake", "Donut", "Eclair", "Froyo", "Gingerbread",
+//                "Honeycomb", "Ice Cream Sandwich", "Jelly Bean",
+//                "KitKat", "Lollipop", "Marshmallow", "Nougat" };
 
-        nameProfessorArray = new String[] { "Cupcake", "Donut", "Eclair", "Froyo", "Gingerbread",
-                "Honeycomb", "Ice Cream Sandwich", "Jelly Bean",
-                "KitKat", "Lollipop", "Marshmallow", "Nougat" };
 
-        getAllProfessors();
+        adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, nameProfessorArray);
+        listView.setAdapter(adapter);
+
+        getAllProfessors(new ResultEvent() {
+            @Override
+            public void onResult(String[] professors) {
+                //Quando houver resultado, mostre os valores na tela!
+                adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, professors);
+                listView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFail(String message) {
+                // Quando houver falha, Exiba uma mensagem de erro!
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+            }
+        });
+
 
 //        createProfessor();
+
+
+        getAllProfessors(new ResultEvent() {
+            @Override
+            public void onResult(String[] professors) {
+
+            }
+
+            @Override
+            public void onFail(String message) {
+
+            }
+        });
+
     }
 
     private void createProfessor() {
@@ -62,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void getAllProfessors() {
+    private void getAllProfessors(final ResultEvent resultEvent) {
         Call<List<Professor>> call = new RetrofitConfig().getProfessorService().getAllProfessors();
 
         call.enqueue(new Callback<List<Professor>>() {
@@ -75,15 +111,14 @@ public class MainActivity extends AppCompatActivity {
                     nameProfessorArray[i] = professoresList.get(i).getName();
                 }
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, nameProfessorArray);
-                listView.setAdapter(adapter);
+                resultEvent.onResult(nameProfessorArray);
 
-//                Toast.makeText(MainActivity.this, professores.get(0).getName(), Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onFailure(Call<List<Professor>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Falha na requisição!!!", Toast.LENGTH_LONG).show();
+
+                resultEvent.onFail("Falha na requisição!!!");
             }
         });
     }

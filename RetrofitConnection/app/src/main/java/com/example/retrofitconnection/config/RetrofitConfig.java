@@ -1,4 +1,4 @@
-package com.example.retrofitconnection;
+package com.example.retrofitconnection.config;
 
 import com.example.retrofitconnection.service.ProfessorService;
 
