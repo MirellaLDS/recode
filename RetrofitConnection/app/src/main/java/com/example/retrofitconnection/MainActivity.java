@@ -1,18 +1,18 @@
 package com.example.retrofitconnection;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.retrofitconnection.config.RetrofitConfig;
 import com.example.retrofitconnection.model.Departamento;
 import com.example.retrofitconnection.model.Professor;
-import com.example.retrofitconnection.repository.ResultEvent;
+import com.example.retrofitconnection.repository.ResultEventInterface;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -21,53 +21,38 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ListView listView;
+    private RecyclerView recyclerView;
     private String[] nameProfessorArray = new String[]{};
-    private ArrayAdapter<String> adapter;
+    private ProfessorAdapter professorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listView = findViewById(R.id.listview);
-//
-//        nameProfessorArray = new String[] { "Cupcake", "Donut", "Eclair", "Froyo", "Gingerbread",
-//                "Honeycomb", "Ice Cream Sandwich", "Jelly Bean",
-//                "KitKat", "Lollipop", "Marshmallow", "Nougat" };
+        recyclerView = findViewById(R.id.recyclerView);
+        professorAdapter = new ProfessorAdapter(this, new ArrayList<Professor>());
 
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        Caso vc queira um Grid user o GridLayoutManager
+//        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView.setAdapter(professorAdapter);
 
-        adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, nameProfessorArray);
-        listView.setAdapter(adapter);
+        //        createProfessor();
 
-        getAllProfessors(new ResultEvent() {
+        getAllProfessors(new ResultEventInterface() {
             @Override
-            public void onResult(String[] professors) {
+            public void onResult(List<Professor> professors) {
                 //Quando houver resultado, mostre os valores na tela!
-                adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, professors);
-                listView.setAdapter(adapter);
+
+                professorAdapter = new ProfessorAdapter(MainActivity.this, professors);
+                recyclerView.setAdapter(professorAdapter);
             }
 
             @Override
             public void onFail(String message) {
                 // Quando houver falha, Exiba uma mensagem de erro!
                 Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
-            }
-        });
-
-
-//        createProfessor();
-
-
-        getAllProfessors(new ResultEvent() {
-            @Override
-            public void onResult(String[] professors) {
-
-            }
-
-            @Override
-            public void onFail(String message) {
-
             }
         });
 
@@ -98,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void getAllProfessors(final ResultEvent resultEvent) {
+    private void getAllProfessors(final ResultEventInterface resultEventInterface) {
         Call<List<Professor>> call = new RetrofitConfig().getProfessorService().getAllProfessors();
 
         call.enqueue(new Callback<List<Professor>>() {
@@ -106,19 +91,14 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<List<Professor>> call, Response<List<Professor>> response) {
                 List<Professor> professoresList = response.body();
 
-                nameProfessorArray = new String[professoresList.size()];
-                for (int i = 0; i < nameProfessorArray.length; i++) {
-                    nameProfessorArray[i] = professoresList.get(i).getName();
-                }
-
-                resultEvent.onResult(nameProfessorArray);
+                resultEventInterface.onResult(professoresList);
 
             }
 
             @Override
             public void onFailure(Call<List<Professor>> call, Throwable t) {
 
-                resultEvent.onFail("Falha na requisição!!!");
+                resultEventInterface.onFail("Falha na requisição!!!");
             }
         });
     }

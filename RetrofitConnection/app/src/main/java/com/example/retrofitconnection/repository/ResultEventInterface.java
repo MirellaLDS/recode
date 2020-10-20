@@ -4,7 +4,7 @@ import com.example.retrofitconnection.model.Professor;
 
 import java.util.List;
 
-public interface ResultEvent {
-    void onResult(String[] professors);
+public interface ResultEventInterface {
+    void onResult(List<Professor> professors);
     void onFail(String message);
 }
