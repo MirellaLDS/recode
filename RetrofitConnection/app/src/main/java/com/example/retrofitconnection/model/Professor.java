@@ -1,21 +1,24 @@
 package com.example.retrofitconnection.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@Entity(tableName = "Professor")
+@JsonIgnoreProperties({"local_id"})
 public class Professor {
 
-    //    {
-//        "id": 301,
-//         "name": "KEVEN LEONE DOS SANTOS",
-//         "cpf": "111",
-//            "departament": {
-//                "id": 271,
-//                "name": "DP 1"
-//            }
-//    }
-
+    @PrimaryKey(autoGenerate = true)
+    private int local_id;
+    @ColumnInfo(name = "server_id")
     private int id;
     private String name;
     private String cpf;
-    Departamento departament;
+//    @Ignore
+    Departamento departament = new Departamento();
 
     public Professor() {
     }
@@ -24,6 +27,18 @@ public class Professor {
         this.name = name;
         this.cpf = cpf;
         this.departament = departament;
+    }
+
+    public int getLocal_id() {
+        return local_id;
+    }
+
+    public void setLocal_id(int local_id) {
+        this.local_id = local_id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId() {
@@ -53,8 +68,6 @@ public class Professor {
     public void setDepartament(Departamento departament) {
         this.departament = departament;
     }
-
-
     public static class ProfessorDTO {
         private String name;
         private String cpf;

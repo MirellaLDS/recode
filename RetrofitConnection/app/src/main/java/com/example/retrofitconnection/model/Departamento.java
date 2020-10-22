@@ -1,12 +1,15 @@
 package com.example.retrofitconnection.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "Departament")
 public class Departamento {
 
-//            "departament": {
-//                "id": 271,
-//                "name": "DP 1"
-//            }
-
+    @PrimaryKey(autoGenerate = true)
+    private int local_id;
+    @ColumnInfo(name = "server_id")
     private int id;
     private String name;
 
@@ -19,6 +22,14 @@ public class Departamento {
     public Departamento(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public int getLocal_id() {
+        return local_id;
+    }
+
+    public void setLocal_id(int local_id) {
+        this.local_id = local_id;
     }
 
     public int getId() {

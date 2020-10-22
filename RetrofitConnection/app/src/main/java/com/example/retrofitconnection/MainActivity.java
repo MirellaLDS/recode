@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.retrofitconnection.config.RetrofitConfig;
+import com.example.retrofitconnection.config.RoomConfig;
 import com.example.retrofitconnection.model.Departamento;
 import com.example.retrofitconnection.model.Professor;
 import com.example.retrofitconnection.repository.ResultEventInterface;
+import com.facebook.stetho.Stetho;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +26,16 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private String[] nameProfessorArray = new String[]{};
     private ProfessorAdapter professorAdapter;
+    private RoomConfig dbInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Stetho.initializeWithDefaults(this);
+
+        dbInstance = RoomConfig.getInstance(this);
 
         recyclerView = findViewById(R.id.recyclerView);
         professorAdapter = new ProfessorAdapter(this, new ArrayList<Professor>());
@@ -41,12 +48,16 @@ public class MainActivity extends AppCompatActivity {
         //        createProfessor();
 
         getAllProfessors(new ResultEventInterface() {
-            @Override
-            public void onResult(List<Professor> professors) {
-                //Quando houver resultado, mostre os valores na tela!
 
-                professorAdapter = new ProfessorAdapter(MainActivity.this, professors);
+            @Override
+            public <T> void onResult(T professors) {
+//                List<Professor> teacher = (List<Professor>) professors;
+
+                  List<Professor> pList = dbInstance.professorDAO().getAll();
+
+                professorAdapter = new ProfessorAdapter(MainActivity.this, pList);
                 recyclerView.setAdapter(professorAdapter);
+
             }
 
             @Override
@@ -90,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Professor>> call, Response<List<Professor>> response) {
                 List<Professor> professoresList = response.body();
+
+                dbInstance.professorDAO().insertALl(professoresList);
 
                 resultEventInterface.onResult(professoresList);
 

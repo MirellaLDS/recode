@@ -1,10 +1,6 @@
 package com.example.retrofitconnection.repository;
 
-import com.example.retrofitconnection.model.Professor;
-
-import java.util.List;
-
 public interface ResultEventInterface {
-    void onResult(List<Professor> professors);
+    <T> void onResult(T professors);
     void onFail(String message);
 }
