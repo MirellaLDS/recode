@@ -10,6 +10,9 @@ import android.widget.EditText;
 
 public class Tela_1Activity extends AppCompatActivity {
 
+    public final static String KEY_INTENT_TELA1 = "CHAVE_MENSAGEM";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,13 +28,13 @@ public class Tela_1Activity extends AppCompatActivity {
                 Intent intent = new Intent(Tela_1Activity.this, Tela_2Activity.class);
 
                 String texto = ed_mensagem.getText().toString();
-                intent.putExtra("CHAVE_MENSAGEM", texto);
+                intent.putExtra(KEY_INTENT_TELA1, texto);
 
                 // Abrir uma tela sem esperar uma resposta
                 startActivity(intent);
 
                 // Abrir uma tela esperando uma resposta
-                startActivityForResult();
+//                startActivityForResult(/*  Conteudo que tem aqui !!!!!!!!!!!!!!!!!*/);
             }
         });
 
