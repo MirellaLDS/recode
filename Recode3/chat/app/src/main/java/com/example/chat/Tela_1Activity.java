@@ -31,7 +31,7 @@ public class Tela_1Activity extends AppCompatActivity {
                 intent.putExtra(KEY_INTENT_TELA1, texto);
 
                 // Abrir uma tela sem esperar uma resposta
-                startActivity(intent);
+//                startActivity(intent);
 
                 // Abrir uma tela esperando uma resposta
 //                startActivityForResult(/*  Conteudo que tem aqui !!!!!!!!!!!!!!!!!*/);
