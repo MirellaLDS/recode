@@ -24,6 +24,11 @@ public class Professor {
     public Professor() {
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     public Professor(String name, String cpf, Departamento departament) {
         this.name = name;
         this.cpf = cpf;

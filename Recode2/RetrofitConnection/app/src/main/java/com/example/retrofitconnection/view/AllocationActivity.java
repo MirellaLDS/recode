@@ -30,7 +30,7 @@ public class AllocationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_allocation);
 
-        recyclerView = findViewById(R.id.rv_allocation);
+//        recyclerView = findViewById(R.id.rv_allocation);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         requetGetAllAllocation(new ResultEventInterface() {

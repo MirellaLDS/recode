@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.Menu;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.retrofitconnection.R;
@@ -27,9 +28,9 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
-    private String[] nameProfessorArray = new String[]{};
-    private ProfessorAdapter professorAdapter;
+//    private RecyclerView recyclerView;
+//    private ProfessorAdapter professorAdapter;
+    private ArrayAdapter adapter;
     private RoomConfig dbInstance;
 
     @Override
@@ -41,13 +42,16 @@ public class MainActivity extends AppCompatActivity {
 
         dbInstance = RoomConfig.getInstance(this);
 
-        recyclerView = findViewById(R.id.recyclerView);
-        professorAdapter = new ProfessorAdapter(this, new ArrayList<Professor>());
+//        recyclerView = findViewById(R.id.recyclerView);
+//        professorAdapter = new ProfessorAdapter(this, new ArrayList<Professor>());
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        final ListView listView = findViewById(R.id.listView);
+
+
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        Caso vc queira um Grid user o GridLayoutManager
 //        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerView.setAdapter(professorAdapter);
+//        recyclerView.setAdapter(professorAdapter);
 
                 createProfessor();
 
@@ -59,8 +63,10 @@ public class MainActivity extends AppCompatActivity {
 
                   List<Professor> pList = dbInstance.professorDAO().getAll();
 
-                professorAdapter = new ProfessorAdapter(MainActivity.this, pList);
-                recyclerView.setAdapter(professorAdapter);
+//                professorAdapter = new ProfessorAdapter(MainActivity.this, pList);
+                adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, pList);
+                listView.setAdapter(adapter);
+//                recyclerView.setAdapter(adapter);
 
             }
 
@@ -71,6 +77,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void createSpnnerData() {
+//        adapter = new SpinAdapter(Main.this,
+//                android.R.layout.simple_spinner_item,
+//                users);
+//        mySpinner = (Spinner) findViewById(R.id.miSpinner);
+//        mySpinner.setAdapter(adapter); // Set the custom adapter to the spinner
+//        // You can create an anonymous listener to handle the event when is selected an spinner item
+//        mySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+//
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view,
+//                                       int position, long id) {
+//                // Here you get the current item (a User object) that is selected by its position
+//                User user = adapter.getItem(position);
+//                // Here you can do the action you want to...
+//                Toast.makeText(Main.this, "ID: " + user.getId() + "\nName: " + user.getName(),
+//                        Toast.LENGTH_SHORT).show();
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapter) {  }
+//        });
     }
 
     private void createProfessor() {
