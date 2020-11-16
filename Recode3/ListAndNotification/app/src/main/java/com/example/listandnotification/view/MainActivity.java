@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import com.example.listandnotification.model.Curso;
 import com.example.listandnotification.R;
+import com.example.listandnotification.repository.CourseRepository;
+import com.example.listandnotification.repository.ResultCourse;
 import com.example.listandnotification.repository.RetrofitConfig;
 
 import java.util.ArrayList;
@@ -29,10 +31,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         // Referencia item da tela
         ListView listView = findViewById(R.id.listView);
-
 
         listaCurso = new ArrayList<>();
         gerenciador = new CursoAdapter(this, R.layout.item_view, listaCurso);
@@ -40,27 +40,20 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(gerenciador);
 
 
-        RetrofitConfig retrofitConfig = new RetrofitConfig();
-        Call<List<Curso>> call = retrofitConfig.getCursoService().getAllCourses();
-
-        call.enqueue(new Callback<List<Curso>>() {
+        CourseRepository repository = new CourseRepository();
+        repository.sendRequetCourse(new ResultCourse() {
             @Override
-            public void onResponse(Call<List<Curso>> call, Response<List<Curso>> response) {
-                List<Curso> cursos = response.body();
-
-
-                ArrayList<Curso> novalista = new ArrayList<>(cursos);
-                listaCurso.addAll(novalista);
+            public void sucesso(List<Curso> cursoList) {
+                listaCurso.addAll(cursoList);
 
                 gerenciador.notifyDataSetChanged();
             }
 
             @Override
-            public void onFailure(Call<List<Curso>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Sua request falhou!", Toast.LENGTH_LONG).show();
+            public void falha() {
+                Toast.makeText(MainActivity.this, "Sua request falhou", Toast.LENGTH_LONG).show();
             }
         });
-
 
 
     }
