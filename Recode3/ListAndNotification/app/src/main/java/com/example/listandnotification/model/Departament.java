@@ -1,18 +1,17 @@
 package com.example.listandnotification.model;
 
-public class Curso {
-
+public class Departament {
     private int id;
     private String name;
 
-    public Curso() {
+    public Departament() {
     }
 
-    public Curso(String name) {
+    public Departament(String name) {
         this.name = name;
     }
 
-    public Curso(int id, String name) {
+    public Departament(int id, String name) {
         this.id = id;
         this.name = name;
     }

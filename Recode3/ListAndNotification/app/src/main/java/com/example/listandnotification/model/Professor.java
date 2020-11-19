@@ -2,39 +2,41 @@ package com.example.listandnotification.model;
 
 public class Professor {
 
-    private String nome;
-    private String cursoName;
+    private long id;
+    private String name;
     private String cpf;
-    private String urlImagem;
+    private Departament departament;
 
     public Professor() {
     }
 
-    public Professor(String nome, String cursoName, String cpf, String urlImagem) {
-        this.nome = nome;
-        this.cursoName = cursoName;
+    public Professor(String name, String cpf, Departament departament) {
+        this.name = name;
         this.cpf = cpf;
-        this.urlImagem = urlImagem;
+        this.departament = departament;
     }
 
-    public String getUrlImagem() {
-        return urlImagem;
+    public Professor(int id, String name, String cpf, Departament departament) {
+        this.id = id;
+        this.name = name;
+        this.cpf = cpf;
+        this.departament = departament;
     }
 
-    public String getNome() {
-        return nome;
+    public long getId() {
+        return id;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public String getCursoName() {
-        return cursoName;
+    public String getName() {
+        return name;
     }
 
-    public void setCursoName(String cursoName) {
-        this.cursoName = cursoName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getCpf() {
@@ -45,8 +47,16 @@ public class Professor {
         this.cpf = cpf;
     }
 
+    public Departament getDepartament() {
+        return departament;
+    }
+
+    public void setDepartament(Departament departament) {
+        this.departament = departament;
+    }
+
     @Override
     public String toString() {
-        return nome;
+        return name;
     }
 }

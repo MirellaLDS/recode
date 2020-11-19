@@ -1,13 +1,8 @@
 package com.example.listandnotification.repository;
 
-import android.widget.Toast;
-
 import com.example.listandnotification.model.Curso;
-import com.example.listandnotification.view.MainActivity;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;

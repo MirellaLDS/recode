@@ -11,9 +11,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ListAndNotification">
-        <activity android:name=".view.DepartamentActivity"></activity>
-        <activity android:name=".view.ProfessorActivity"></activity>
-        <activity android:name=".view.MainActivity">
+        <activity android:name=".view.ViewPagerActivity"/>
+
+        <activity android:name=".view.AddCursoActivity"></activity>
+
+        <activity android:name=".view.DepartamentActivity" />
+        <activity
+            android:name=".view.ProfessorActivity"
+            android:label="Professor"/>
+
+        <activity android:name=".view.CursosActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
