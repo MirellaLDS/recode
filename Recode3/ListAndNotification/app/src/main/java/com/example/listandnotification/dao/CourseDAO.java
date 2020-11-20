@@ -14,8 +14,8 @@ public interface CourseDAO {
     @Query("Select * from Course")
     List<Curso> selectAll();
 
-//    @Query("Select * from Course where id")
-//    List<Curso> selectById(int id);
+    @Query("Select * from Course where id=:id")
+    List<Curso> selectById(int id);
 
     @Insert
     void insertAll(List<Curso> cursoList);
