@@ -1,6 +1,7 @@
 package com.example.listandnotification.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +14,9 @@ import android.widget.Toast;
 import com.example.listandnotification.model.Curso;
 import com.example.listandnotification.R;
 import com.example.listandnotification.repository.CourseRepository;
-import com.example.listandnotification.repository.ResultCourse;
+import com.example.listandnotification.repository.ResultCourseInterface;
+import com.example.listandnotification.repository.RoomConfig;
+import com.facebook.stetho.Stetho;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +25,17 @@ public class CursosActivity extends AppCompatActivity {
 
     ArrayList<Curso> listaCurso;
     private ArrayAdapter gerenciador;
+    private RoomConfig roomConfig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Stetho.initializeWithDefaults(this);
+
+        roomConfig = RoomConfig.getInstance(this);
+
 
         // Referencia item da tela
         ListView listView = findViewById(R.id.listView);
@@ -51,11 +60,11 @@ public class CursosActivity extends AppCompatActivity {
         super.onResume();
 
         CourseRepository repository = new CourseRepository();
-        repository.sendRequetCourse(new ResultCourse() {
+        repository.sendRequetCourse(new ResultCourseInterface() {
             @Override
             public void sucesso(List<Curso> cursoList) {
+                roomConfig.cursoDao().insertAll(cursoList);
                 listaCurso.addAll(cursoList);
-
                 gerenciador.notifyDataSetChanged();
             }
 

@@ -11,7 +11,7 @@ import retrofit2.Response;
 
 public class CourseRepository {
 
-    public void sendRequetCourse(ResultCourse resultCourse) {
+    public void sendRequetCourse(ResultCourseInterface resultCourseInterface) {
 
         RetrofitConfig retrofitConfig = new RetrofitConfig();
         Call<List<Curso>> call = retrofitConfig.getCursoService().getAllCourses();
@@ -25,13 +25,13 @@ public class CourseRepository {
 
                 ArrayList<Curso> novalista = new ArrayList<>(cursos);
 
-                resultCourse.sucesso(novalista);
+                resultCourseInterface.sucesso(novalista);
 
             }
 
             @Override
             public void onFailure(Call<List<Curso>> call, Throwable t) {
-                resultCourse.falha();
+                resultCourseInterface.falha();
             }
         });
     }

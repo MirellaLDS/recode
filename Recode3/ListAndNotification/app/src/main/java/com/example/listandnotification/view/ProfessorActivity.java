@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.listandnotification.R;
@@ -22,7 +23,8 @@ import retrofit2.Response;
 public class ProfessorActivity extends AppCompatActivity {
 
     private ArrayList<Professor> professorsList;
-    ArrayAdapter<Professor> adapterProf;
+    private ArrayAdapter<Professor> adapterProf;
+    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +42,16 @@ public class ProfessorActivity extends AppCompatActivity {
 
 
         ListView listView = findViewById(R.id.lv_prof);
+        textView = findViewById(R.id.test);
 
         professorsList = new ArrayList<>();
         adapterProf = new ArrayAdapter(ProfessorActivity.this, android.R.layout.simple_list_item_1, professorsList);
         listView.setAdapter(adapterProf);
 
+        request();
+    }
+
+    private void request() {
         RetrofitConfig retrofitConfig = new RetrofitConfig();
         Call<List<Professor>> getRequestCall = retrofitConfig.getProfessorService().getAllProfessors();
 
@@ -52,10 +59,7 @@ public class ProfessorActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Professor>> call, Response<List<Professor>> response) {
                 List<Professor> list = response.body();
-
-                professorsList.addAll(list);
-
-                adapterProf.notifyDataSetChanged();
+                formatFields(list);
             }
 
             @Override
@@ -63,6 +67,11 @@ public class ProfessorActivity extends AppCompatActivity {
                 Toast.makeText(ProfessorActivity.this, "Sua request falhou", Toast.LENGTH_LONG).show();
             }
         });
+    }
 
+    private void formatFields(List<Professor> list) {
+        textView.setText(list.get(0).toString());
+        professorsList.addAll(list);
+        adapterProf.notifyDataSetChanged();
     }
 }

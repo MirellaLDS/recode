@@ -1,7 +1,14 @@
 package com.example.listandnotification.model;
 
+
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "Course")
 public class Curso {
 
+    @PrimaryKey
     private int id;
     private String name;
 
